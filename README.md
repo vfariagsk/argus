@@ -85,8 +85,9 @@ If HTTPS is available, Argus parses:
 git clone https://github.com/your-username/argus.git
 cd argus
 
-# Build the binary
-go build -o argus ./cmd
+# Install
+chmod +x install.sh
+./install.sh
 ```
 
 ## 📖 Usage
@@ -209,43 +210,14 @@ argus/
 ```
 
 ## 🔧 Configuration
-
-### Environment Variables
-Argus supports configuration via environment variables loaded from a `.env` file. Copy `env.example` to `.env` and modify as needed:
-
-```bash
-# Copy the example file
-cp env.example .env
-
-# Edit the configuration
-nano .env
-```
-
-**Available Environment Variables:**
-- `API_KEY` - API key for external services
-- `CENSYS_API_ID` / `CENSYS_API_SECRET` - Censys API credentials
-- `DNS_TIMEOUT` - DNS resolution timeout (default: 10s)
-- `DNS_THREADS` - DNS resolution threads (default: 50)
-- `HTTP_TIMEOUT` - HTTP request timeout (default: 10s)
-- `HTTP_THREADS` - HTTP scanning threads (default: 50)
-- `OUTPUT_DIR` - Output directory (default: ./output)
-- `OUTPUT_FORMAT` - Output format (console, json, markdown, both)
-- `ENABLE_TLS` - Enable TLS analysis (default: true)
-- `ENABLE_GEOIP` - Enable GeoIP analysis (default: true)
-- `ENABLE_CDN_DETECTION` - Enable CDN detection (default: true)
-- `ENABLE_TAKEOVER_CHECK` - Enable takeover detection (default: true)
-- `ENABLE_WILDCARD_CHECK` - Enable wildcard DNS check (default: true)
-- `HTTP_PROXY` / `HTTPS_PROXY` - Proxy configuration
-- `LOG_LEVEL` - Logging level (default: info)
-
-### CLI Flags
 Use CLI flags or edit default config in configs/default.go.
 
-**Configurable via CLI:**
-- Concurrency (--threads)
-- Wordlist (--wordlist)
-- Timeout per request (--timeout)
-- Output format (--format)
+Configurable:
+
+- Concurrency
+- Wordlist
+- Timeout per request
+- Output format
 - Headers of interest
 - Takeover fingerprints
 - TLS check depth
