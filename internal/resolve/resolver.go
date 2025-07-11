@@ -534,6 +534,42 @@ func (r *Resolver) detectHostingProvider(result *DNSResolutionResult) string {
 		"KingHost": {
 			"kinghost.com.br",
 		},
+		"WP Engine": {
+			"wpengine.com",
+		},
+		"Kinsta": {
+			"kinsta.com",
+		},
+		"Flywheel": {
+			"getflywheel.com",
+		},
+		"Pantheon": {
+			"pantheon.io",
+		},
+		"Platform.sh": {
+			"platform.sh",
+		},
+		"Compilr": {
+			"compilr.com",
+		},
+		"Surge": {
+			"surge.sh",
+		},
+		"Readme.io": {
+			"readme.io",
+		},
+		"GitLab Pages": {
+			"gitlab.io",
+		},
+		"InMotion Hosting": {
+			"inmotionhosting.com",
+		},
+		"Site5": {
+			"site5.com",
+		},
+		"Cloudflare Pages": {
+			"pages.dev",
+		},
 	}
 
 	if cnameRecords, exists := result.Records["CNAME"]; exists {
