@@ -525,8 +525,8 @@ func (r *Resolver) detectHostingProvider(result *DNSResolutionResult) string {
 		"Github Pages": {
 			"github.io",
 		},
-		"Cloudflare Pages": {
-			"pages.dev",
+		"Cloudflare": {
+			"cloudflare.com",
 		},
 		"Short.io": {
 			"short.io",
