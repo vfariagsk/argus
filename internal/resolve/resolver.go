@@ -325,6 +325,8 @@ func (r *Resolver) analyzeSingleIP(ip string, result *DNSResolutionResult) IPInf
 			ipInfo.ISP = geoInfo.ISP
 			ipInfo.ASN = geoInfo.ASN
 			ipInfo.ASName = geoInfo.ASName
+			ipInfo.Lat = geoInfo.Lat
+			ipInfo.Long = geoInfo.Long
 		}
 	}
 
@@ -339,13 +341,12 @@ func (r *Resolver) getCachedGeoIP(ip string) *GeoIPInfo {
 	}
 	r.cacheMutex.RUnlock()
 
-	go func() {
-		if geoInfo, err := r.geoAnalyzer.Lookup(ip); err == nil {
-			r.cacheMutex.Lock()
-			r.geoIPCache[ip] = geoInfo
-			r.cacheMutex.Unlock()
-		}
-	}()
+	if geoInfo, err := r.geoAnalyzer.Lookup(ip); err == nil {
+		r.cacheMutex.Lock()
+		r.geoIPCache[ip] = geoInfo
+		r.cacheMutex.Unlock()
+		return geoInfo
+	}
 
 	return nil
 }

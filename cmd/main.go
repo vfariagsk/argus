@@ -526,6 +526,44 @@ func runResolve(domain, subsFile string) {
 
 	timestamp := time.Now().Format("2006-01-02_15-04-05")
 
+	if len(resolutionResults) > 0 {
+		fmt.Printf("\n" + strings.Repeat("-", 80) + "\n")
+		fmt.Printf("🔍 DETAILED RESULTS\n")
+		fmt.Printf(strings.Repeat("-", 80) + "\n")
+
+		for _, res := range resolutionResults {
+			if res.Resolved && len(res.IPs) > 0 {
+				fmt.Printf("\n📍 %s:\n", res.Host)
+				for i, ip := range res.IPs {
+					fmt.Printf("   IP %d: %s", i+1, ip.IP)
+					if ip.IsCDN {
+						fmt.Printf(" [CDN: %s]", ip.CDNProvider)
+					}
+					if ip.IsCloud {
+						fmt.Printf(" [Cloud: %s]", ip.CloudProvider)
+					}
+					if ip.Hosting != "" {
+						fmt.Printf(" [Hosting: %s]", ip.Hosting)
+					}
+					if ip.Country != "" {
+						fmt.Printf(" [%s, %s]", ip.Country, ip.City)
+						if ip.ISP != "" {
+							fmt.Printf(" [ISP: %s]", ip.ISP)
+						}
+						if ip.ASN != "" {
+							fmt.Printf(" [ASN: %s]", ip.ASN)
+						}
+						if ip.Lat != 0 && ip.Long != 0 {
+							fmt.Printf(" [%.6f, %.6f]", ip.Lat, ip.Long)
+						}
+					}
+					fmt.Printf("\n")
+				}
+			}
+		}
+		fmt.Printf("\n" + strings.Repeat("-", 80) + "\n")
+	}
+
 	if resolveType == "ip" {
 		ipFilename := fmt.Sprintf("%s/%s_ips_%s.txt", outputDir, domain, timestamp)
 		file, err := os.Create(ipFilename)
@@ -535,10 +573,24 @@ func runResolve(domain, subsFile string) {
 		}
 		defer file.Close()
 
+		geoIPCount := 0
 		for _, res := range resolutionResults {
 			if res.Resolved && len(res.IPs) > 0 {
 				for _, ip := range res.IPs {
-					file.WriteString(fmt.Sprintf("%s,%s\n", res.Host, ip.IP))
+					// Formato: host,ip,country,city,isp,asn,lat,long
+					geoInfo := ""
+					if ip.Country != "" {
+						geoIPCount++
+						geoInfo = fmt.Sprintf(",%s,%s,%s,%s",
+							ip.Country,
+							ip.City,
+							ip.ISP,
+							ip.ASN)
+						if ip.Lat != 0 && ip.Long != 0 {
+							geoInfo += fmt.Sprintf(",%.6f,%.6f", ip.Lat, ip.Long)
+						}
+					}
+					file.WriteString(fmt.Sprintf("%s,%s%s\n", res.Host, ip.IP, geoInfo))
 				}
 			}
 		}
@@ -546,6 +598,9 @@ func runResolve(domain, subsFile string) {
 		fmt.Printf("✅ IP resolution completed!\n")
 		fmt.Printf("📊 DNS Resolved: %d/%d (%.1f%%)\n", resolvedCount, len(subdomains),
 			float64(resolvedCount)/float64(len(subdomains))*100)
+		if geoIPCount > 0 {
+			fmt.Printf("🌍 GeoIP Info: %d IPs with location data\n", geoIPCount)
+		}
 		fmt.Printf("📄 IP results saved: %s\n", ipFilename)
 		fmt.Printf("⏱️  Duration: %v\n", time.Since(startTime))
 

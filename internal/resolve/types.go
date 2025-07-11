@@ -19,6 +19,8 @@ type IPInfo struct {
 	ISP           string            `json:"isp,omitempty"`
 	ASN           string            `json:"asn,omitempty"`
 	ASName        string            `json:"as_name,omitempty"`
+	Lat           float64           `json:"lat,omitempty"`
+	Long          float64           `json:"long,omitempty"`
 	IsPublic      bool              `json:"is_public"`
 	IsCDN         bool              `json:"is_cdn"`
 	CDNProvider   string            `json:"cdn_provider,omitempty"`
