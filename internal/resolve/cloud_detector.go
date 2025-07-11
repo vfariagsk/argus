@@ -16,7 +16,6 @@ func NewCloudDetector() *CloudDetector {
 	detector := &CloudDetector{
 		ipRanges: make(map[string][]string),
 	}
-	detector.loadIPRanges()
 	return detector
 }
 
@@ -217,9 +216,4 @@ func (cd *CloudDetector) detectByWhois(ip string) string {
 	}
 
 	return ""
-}
-
-func (cd *CloudDetector) loadIPRanges() {
-	// Carregar ranges de IP em memória para melhor performance
-	// Esta função pode ser expandida para cache de ranges
 }
