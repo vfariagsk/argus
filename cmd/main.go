@@ -559,6 +559,32 @@ func runResolve(domain, subsFile string) {
 					}
 					fmt.Printf("\n")
 				}
+
+				// Mostrar informações de TLS se disponível
+				if res.TLS.Enabled {
+					fmt.Printf("   🔐 TLS: %s, %s", res.TLS.Version, res.TLS.Issuer)
+					if res.TLS.Expired {
+						fmt.Printf(" [EXPIRED]")
+					}
+					if res.TLS.SelfSigned {
+						fmt.Printf(" [SELF-SIGNED]")
+					}
+					if res.TLS.RiskScore > 0 {
+						fmt.Printf(" [RISK: %d]", res.TLS.RiskScore)
+					}
+					fmt.Printf("\n")
+
+					// Mostrar informações detalhadas de segurança
+					if len(res.TLS.SupportedVersions) > 0 {
+						fmt.Printf("     📋 Versions: %s\n", strings.Join(res.TLS.SupportedVersions, ", "))
+					}
+					if len(res.TLS.WeakCiphers) > 0 {
+						fmt.Printf("     ⚠️  Weak Ciphers: %s\n", strings.Join(res.TLS.WeakCiphers, ", "))
+					}
+					if len(res.TLS.SecurityHeaders) > 0 {
+						fmt.Printf("     🛡️  Security Headers: %d found\n", len(res.TLS.SecurityHeaders))
+					}
+				}
 			}
 		}
 		fmt.Printf("\n" + strings.Repeat("-", 80) + "\n")

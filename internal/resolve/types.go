@@ -43,7 +43,27 @@ type TLSInfo struct {
 	SANs               []string  `json:"sans,omitempty"`
 	SignatureAlgorithm string    `json:"signature_algorithm,omitempty"`
 	KeySize            int       `json:"key_size,omitempty"`
+	KeyType            string    `json:"key_type,omitempty"`
 	Errors             []string  `json:"errors,omitempty"`
+
+	SupportedVersions []string `json:"supported_versions,omitempty"`
+	SupportedCiphers  []string `json:"supported_ciphers,omitempty"`
+	PreferredCipher   string   `json:"preferred_cipher,omitempty"`
+	SupportedCurves   []string `json:"supported_curves,omitempty"`
+	PreferredCurve    string   `json:"preferred_curve,omitempty"`
+
+	WeakCiphers        []string `json:"weak_ciphers,omitempty"`
+	DeprecatedVersions []string `json:"deprecated_versions,omitempty"`
+
+	SecurityHeaders map[string]string `json:"security_headers,omitempty"`
+
+	CertificateChain []string `json:"certificate_chain,omitempty"`
+	OCSPStapling     bool     `json:"ocsp_stapling"`
+	HSTS             bool     `json:"hsts"`
+	HPKP             bool     `json:"hpkp"`
+
+	RiskScore   int      `json:"risk_score,omitempty"`
+	RiskFactors []string `json:"risk_factors,omitempty"`
 }
 
 type LoadBalancerInfo struct {
@@ -90,7 +110,7 @@ func DefaultDNSConfig() DNSConfig {
 		EnableGeoIP:         true,
 		EnableCDNDetection:  true,
 		EnableTakeoverCheck: true,
-		EnableWildcardCheck: false,
+		EnableWildcardCheck: true,
 		UserAgent:           "Argus/1.0 (Cybersecurity)",
 		Nameservers:         []string{"8.8.8.8:53", "1.1.1.1:53", "8.8.4.4:53"},
 	}
