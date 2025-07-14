@@ -247,6 +247,56 @@ func (r *Reporter) generateConsole(data *ReportData) {
 			if len(httpInfo.Traceroute) > 0 {
 				fmt.Printf("   Traceroute: %d hops\n", len(httpInfo.Traceroute))
 			}
+
+			if len(httpInfo.SecurityIssues) > 0 {
+				fmt.Printf("   🔒 Security Issues (%d):\n", len(httpInfo.SecurityIssues))
+				for _, issue := range httpInfo.SecurityIssues {
+					fmt.Printf("      • %s [%s]: %s\n", issue.Type, issue.Risk, issue.Description)
+				}
+			}
+
+			if len(httpInfo.AnomalousBehavior) > 0 {
+				fmt.Printf("   ⚠️  Anomalous Behavior (%d):\n", len(httpInfo.AnomalousBehavior))
+				for _, anomaly := range httpInfo.AnomalousBehavior {
+					fmt.Printf("      • %s [%s]: %s\n", anomaly.Type, anomaly.Risk, anomaly.Description)
+				}
+			}
+
+			if len(httpInfo.AdminPanels) > 0 {
+				fmt.Printf("   🛡️  Admin Panels (%d):\n", len(httpInfo.AdminPanels))
+				for _, panel := range httpInfo.AdminPanels {
+					fmt.Printf("      • %s [%s]: %s\n", panel.Path, panel.Risk, panel.Description)
+				}
+			}
+
+			if len(httpInfo.LoginPortals) > 0 {
+				fmt.Printf("   🔐 Login Portals (%d):\n", len(httpInfo.LoginPortals))
+				for _, portal := range httpInfo.LoginPortals {
+					fmt.Printf("      • %s [%s]: %s\n", portal.Path, portal.Risk, portal.Description)
+				}
+			}
+
+			if len(httpInfo.DebugEndpoints) > 0 {
+				fmt.Printf("   🐛 Debug Endpoints (%d):\n", len(httpInfo.DebugEndpoints))
+				for _, endpoint := range httpInfo.DebugEndpoints {
+					fmt.Printf("      • %s [%s]: %s\n", endpoint.Path, endpoint.Risk, endpoint.Description)
+				}
+			}
+
+			if len(httpInfo.OpenRedirects) > 0 {
+				fmt.Printf("   🔄 Open Redirects (%d):\n", len(httpInfo.OpenRedirects))
+				for _, redirect := range httpInfo.OpenRedirects {
+					fmt.Printf("      • %s [%s]: %s\n", redirect.Parameter, redirect.Risk, redirect.Value)
+				}
+			}
+
+			if httpInfo.RiskScore > 0 {
+				fmt.Printf("   🎯 Risk Score: %d\n", httpInfo.RiskScore)
+			}
+
+			if len(httpInfo.SupportedMethods) > 0 {
+				fmt.Printf("   📋 Supported Methods: %s\n", strings.Join(httpInfo.SupportedMethods, ", "))
+			}
 		}
 	}
 

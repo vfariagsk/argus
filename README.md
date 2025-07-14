@@ -26,10 +26,12 @@ For each subdomain:
 
 ### HTTP & HTTPS Fingerprinting
 Argus connects to live subdomains and extracts:
-- **Status code**, **redirect chains**, **response length**
-- **Page title**, **favicon hash**
-- **Response headers** (`Server`, `X-Powered-By`, `Set-Cookie`, etc.)
-- **Technology stack inference** based on known fingerprints
+- **Status code, redirect chains, traceroute, response size, cookie details**
+- **Page title, detected framework markers, favicon hash**
+- **Response headers** (Server, X-Powered-By, Set-Cookie, etc.)
+- **Security header analysis** (Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, etc.)
+- **Technology stack inference** via response signatures, headers and source code patterns
+- **Exposure of sensitive files** (robots.txt, .git/, .env, etc.)
 
 ### TLS/SSL Intelligence
 If HTTPS is available, Argus parses:

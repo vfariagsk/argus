@@ -45,7 +45,7 @@ func (t *Tracerouter) Trace(host string) ([]HopInfo, error) {
 }
 
 func (t *Tracerouter) executeTraceroute(targetIP string) (string, error) {
-	commands := []string{"traceroute", "tracert", "tracepath"}
+	commands := []string{"traceroute"}
 
 	for _, cmd := range commands {
 		if output, err := t.runCommand(cmd, targetIP); err == nil {
@@ -72,23 +72,9 @@ func (t *Tracerouter) runCommand(command, target string) (string, error) {
 
 	cmd := exec.Command(command, args...)
 
-	done := make(chan error, 1)
-	go func() {
-		done <- cmd.Run()
-	}()
-
-	select {
-	case err := <-done:
-		if err != nil {
-			return "", err
-		}
-	case <-time.After(t.timeout):
-		cmd.Process.Kill()
-		return "", fmt.Errorf("traceroute timeout")
-	}
-
 	output, err := cmd.Output()
 	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 
